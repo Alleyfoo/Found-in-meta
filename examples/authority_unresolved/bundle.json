@@ -1,0 +1,348 @@
+{
+  "case_id": "authority_unresolved",
+  "changes_applied": [],
+  "checks": [
+    {
+      "evidence_ids": [
+        "evidence-006"
+      ],
+      "expected": true,
+      "id": "access-DOC-003",
+      "name": "Requester has read access under deny-overrides rules",
+      "observed": true,
+      "status": "pass"
+    },
+    {
+      "evidence_ids": [
+        "evidence-005"
+      ],
+      "expected": "approved",
+      "id": "workflow-DOC-003",
+      "name": "Current workflow state is approved",
+      "observed": "approved",
+      "status": "pass"
+    },
+    {
+      "evidence_ids": [
+        "evidence-004"
+      ],
+      "expected": "A32",
+      "id": "apartment-view-DOC-003",
+      "name": "Document relationship matches requested apartment",
+      "observed": "A31",
+      "status": "fail"
+    },
+    {
+      "evidence_ids": [
+        "evidence-003",
+        "evidence-004",
+        "evidence-005",
+        "evidence-006",
+        "evidence-007",
+        "evidence-002"
+      ],
+      "expected": 1,
+      "id": "candidate-count",
+      "name": "Exactly one exported rental agreement matches the agreement identifier",
+      "observed": 1,
+      "status": "pass"
+    },
+    {
+      "evidence_ids": [
+        "evidence-008",
+        "evidence-001"
+      ],
+      "expected": 1,
+      "id": "erp-count",
+      "name": "Exactly one ERP record matches the agreement identifier",
+      "observed": 1,
+      "status": "pass"
+    },
+    {
+      "evidence_ids": [
+        "evidence-004",
+        "evidence-008",
+        "evidence-001"
+      ],
+      "expected": "equal apartment identifiers",
+      "id": "relationship-comparison",
+      "name": "DMS and ERP apartment relationships agree",
+      "observed": {
+        "dms_apartment_id": "A31",
+        "erp_apartment_id": "A32"
+      },
+      "status": "fail"
+    }
+  ],
+  "complaint": {
+    "agreement_id": "AGR-003",
+    "apartment_id": "A32",
+    "requester_id": "property_manager",
+    "text": "The approved rental agreement for Apartment A32 is missing from my approved apartment view."
+  },
+  "evidence": [
+    {
+      "id": "evidence-001",
+      "kind": "comparison_policy",
+      "locator": "environment.json#/comparison_policy",
+      "observed": {
+        "id": "relationship-verification-v1",
+        "reference_source_by_agreement": {
+          "AGR-001": "erp_snapshot",
+          "AGR-002": "erp_snapshot",
+          "AGR-003": null,
+          "AGR-004": "erp_snapshot"
+        },
+        "requires_authorised_verification": true,
+        "source_id": "housing_policy",
+        "source_record_id": "policy:relationship-verification:v1",
+        "statement": "ERP is nominated as a comparison reference only for the listed agreements with an explicit value. It is not correction authority. Where null, authority has not been established. All proposed relationship corrections require authorised verification of underlying records and a separate decision."
+      },
+      "source_id": "housing_policy",
+      "source_record_id": "policy:relationship-verification:v1"
+    },
+    {
+      "id": "evidence-002",
+      "kind": "investigator_scope",
+      "locator": "environment.json#/investigator",
+      "observed": {
+        "export_scope": "Previously authorised read-only evidence export of all five synthetic documents, metadata, workflow and ACL rules. This label is not authentication or an access grant.",
+        "principal_id": "records_investigator",
+        "source_id": "dms_export"
+      },
+      "source_id": "dms_export",
+      "source_record_id": "records_investigator"
+    },
+    {
+      "id": "evidence-003",
+      "kind": "document_metadata",
+      "locator": "environment.json#/documents/2",
+      "observed": {
+        "agreement_id": "AGR-003",
+        "class_id": "rental_agreement",
+        "id": "DOC-003",
+        "metadata": {
+          "agreement_id": "AGR-003",
+          "effective_date": "2026-09-01",
+          "revision": 1,
+          "signed": true,
+          "title": "Rental agreement AGR-003"
+        }
+      },
+      "source_id": "dms_export",
+      "source_record_id": "dms:DOC-003:v1"
+    },
+    {
+      "id": "evidence-004",
+      "kind": "relationships",
+      "locator": "environment.json#/documents/2/relationships",
+      "observed": {
+        "apartment_id": "A31",
+        "property_id": "P1"
+      },
+      "source_id": "dms_export",
+      "source_record_id": "dms:DOC-003:v1"
+    },
+    {
+      "id": "evidence-005",
+      "kind": "workflow",
+      "locator": "environment.json#/documents/2/workflow",
+      "observed": {
+        "approval_event": {
+          "actor_label": "Fictional tenancy approver",
+          "at": "2026-09-01T12:00:00Z",
+          "id": "APPROVAL-003",
+          "meaning": "Approval of this document version; no authority to correct relationships."
+        },
+        "state": "approved"
+      },
+      "source_id": "dms_export",
+      "source_record_id": "dms:DOC-003:v1"
+    },
+    {
+      "id": "evidence-006",
+      "kind": "requester_access",
+      "locator": "environment.json#/documents/2/acl",
+      "observed": {
+        "can_read": true,
+        "deny_overrides": true,
+        "matching_allow_roles": [
+          "property_manager"
+        ],
+        "matching_deny_roles": [],
+        "requester_id": "property_manager",
+        "requester_roles": [
+          "property_manager"
+        ],
+        "rules": {
+          "allow_read_roles": [
+            "property_manager",
+            "records_investigator"
+          ],
+          "deny_read_roles": []
+        }
+      },
+      "source_id": "dms_export",
+      "source_record_id": "dms:DOC-003:v1"
+    },
+    {
+      "id": "evidence-007",
+      "kind": "content_existence",
+      "locator": "documents/doc-003.txt",
+      "observed": {
+        "bytes": 351,
+        "document_id": "DOC-003",
+        "exists_in_export": true,
+        "sha256": "f76e573fada36bacd17127188a0217efa9d9c134ace8b80bba9fb3bdff9edb4f"
+      },
+      "source_id": "dms_export",
+      "source_record_id": "dms:DOC-003:v1"
+    },
+    {
+      "id": "evidence-008",
+      "kind": "erp_record",
+      "locator": "environment.json#/erp_records/2",
+      "observed": {
+        "agreement_id": "AGR-003",
+        "apartment_id": "A32",
+        "business_status": "active",
+        "id": "ERP-003",
+        "source_id": "erp_snapshot",
+        "source_record_id": "erp:rental:003"
+      },
+      "source_id": "erp_snapshot",
+      "source_record_id": "erp:rental:003"
+    }
+  ],
+  "findings": [
+    {
+      "code": "apartment_filter_mismatch",
+      "evidence_ids": [
+        "evidence-004"
+      ],
+      "statement": "The document's A31 relationship excludes it from the requester's A32 apartment view."
+    },
+    {
+      "code": "authority_unresolved",
+      "evidence_ids": [
+        "evidence-004",
+        "evidence-008",
+        "evidence-001"
+      ],
+      "statement": "DMS and ERP disagree and the supplied policy does not establish an authoritative comparison source for this agreement."
+    }
+  ],
+  "inferences": [
+    {
+      "evidence_ids": [
+        "evidence-004",
+        "evidence-008",
+        "evidence-001"
+      ],
+      "statement": "A mistaken apartment selection during DMS entry could explain the discrepancy.",
+      "status": "unconfirmed"
+    },
+    {
+      "evidence_ids": [
+        "evidence-004",
+        "evidence-008",
+        "evidence-001"
+      ],
+      "statement": "A stale ERP record or an incompletely recorded reassignment could also explain the discrepancy.",
+      "status": "unconfirmed"
+    },
+    {
+      "evidence_ids": [
+        "evidence-004",
+        "evidence-008",
+        "evidence-001"
+      ],
+      "statement": "An incorrect cross-system agreement identifier mapping could associate records that should not be compared.",
+      "status": "unconfirmed"
+    }
+  ],
+  "proposed_next_action": "Ask the housing records owner to establish authority between DMS and ERP, inspect the underlying agreement and record a decision before proposing any correction.",
+  "replay": {
+    "audience": "authorised_investigator",
+    "snapshot_at": "2026-10-01T09:00:00Z",
+    "synthetic": true,
+    "tool_version": "0.1.0"
+  },
+  "required_human_decision": {
+    "question": "Which source and apartment value should govern, and what verified evidence supports a subsequent authorised change?",
+    "required": true,
+    "role": "housing_records_owner"
+  },
+  "retrieval": {
+    "blockers": [
+      "apartment_filter_mismatch",
+      "authority_unresolved"
+    ],
+    "matched_document_ids": [
+      "DOC-003"
+    ],
+    "requester_visible_document_ids": []
+  },
+  "schema_version": "found-in-meta.investigation/v1",
+  "source_files": [
+    {
+      "content": "SYNTHETIC INVENTORY APPENDIX\nRelated agreement: AGR-001\nNeutral attachment demonstrating an explicit agreement-document relationship.\nNo apartment assignment is asserted in this file.\n",
+      "path": "documents/doc-001-appendix.txt",
+      "sha256": "d71bb7bfc4e001b0324f1d340d3f0b165b66673312ec9f4ab9901d7dd70b533a"
+    },
+    {
+      "content": "SYNTHETIC RENTAL AGREEMENT\nAgreement identifier: AGR-001\nDocument identifier: DOC-001\nFictional parties: Cedar Court Housing and Example Resident 1.\nThis neutral content fixture establishes file presence only. It does not identify an apartment or resolve any metadata discrepancy.\nNo real people, properties, signatures, or contracts are represented.\n",
+      "path": "documents/doc-001.txt",
+      "sha256": "f0f68823391f1e4661bb35649bf386df7c02ef9401a06eef5c7fe0710766c6b2"
+    },
+    {
+      "content": "SYNTHETIC RENTAL AGREEMENT\nAgreement identifier: AGR-002\nDocument identifier: DOC-002\nFictional parties: Cedar Court Housing and Example Resident 2.\nThis neutral content fixture establishes file presence only. It does not identify an apartment or resolve any metadata discrepancy.\nNo real people, properties, signatures, or contracts are represented.\n",
+      "path": "documents/doc-002.txt",
+      "sha256": "339916caf6f9e476b98014753c4031d764f0d1965f45875644d64663a08c5a18"
+    },
+    {
+      "content": "SYNTHETIC RENTAL AGREEMENT\nAgreement identifier: AGR-003\nDocument identifier: DOC-003\nFictional parties: Cedar Court Housing and Example Resident 3.\nThis neutral content fixture establishes file presence only. It does not identify an apartment or resolve any metadata discrepancy.\nNo real people, properties, signatures, or contracts are represented.\n",
+      "path": "documents/doc-003.txt",
+      "sha256": "f76e573fada36bacd17127188a0217efa9d9c134ace8b80bba9fb3bdff9edb4f"
+    },
+    {
+      "content": "SYNTHETIC RENTAL AGREEMENT\nAgreement identifier: AGR-004\nDocument identifier: DOC-004\nFictional parties: Cedar Court Housing and Example Resident 4.\nThis neutral content fixture establishes file presence only. It does not identify an apartment or resolve any metadata discrepancy.\nNo real people, properties, signatures, or contracts are represented.\n",
+      "path": "documents/doc-004.txt",
+      "sha256": "afda18c3e37c864b72bdf25545921f650a7a7bf7056ecdd953348c98709d0eac"
+    },
+    {
+      "content": "{\n  \"organisation\": {\n    \"id\": \"CEDAR-COURT\",\n    \"name\": \"Cedar Court Housing\",\n    \"fictional\": true\n  },\n  \"snapshot_at\": \"2026-10-01T09:00:00Z\",\n  \"sources\": [\n    {\n      \"id\": \"dms_export\",\n      \"label\": \"Cedar Court synthetic document export\",\n      \"snapshot_id\": \"DMS-2026-10-01-001\",\n      \"captured_at\": \"2026-10-01T09:00:00Z\",\n      \"provenance\": \"Deterministically authored fictional DMS export; no live product or proprietary API used.\"\n    },\n    {\n      \"id\": \"erp_snapshot\",\n      \"label\": \"Cedar Court synthetic ERP snapshot\",\n      \"snapshot_id\": \"ERP-2026-10-01-001\",\n      \"captured_at\": \"2026-10-01T09:00:00Z\",\n      \"provenance\": \"Deterministically authored fictional housing business records; no ERP connection.\"\n    },\n    {\n      \"id\": \"housing_policy\",\n      \"label\": \"Fictional housing comparison policy\",\n      \"snapshot_id\": \"POLICY-2026-09-01-v1\",\n      \"captured_at\": \"2026-10-01T09:00:00Z\",\n      \"provenance\": \"Fictional comparison policy for this demonstration; not a statement of product behavior.\"\n    }\n  ],\n  \"properties\": [\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"property:P1\",\n      \"id\": \"P1\",\n      \"name\": \"Cedar Court\",\n      \"address\": \"1 Example Lane, Fictional Town\"\n    }\n  ],\n  \"apartments\": [\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"apartment:A14\",\n      \"id\": \"A14\",\n      \"property_id\": \"P1\",\n      \"label\": \"Apartment A14\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"apartment:A41\",\n      \"id\": \"A41\",\n      \"property_id\": \"P1\",\n      \"label\": \"Apartment A41\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"apartment:A22\",\n      \"id\": \"A22\",\n      \"property_id\": \"P1\",\n      \"label\": \"Apartment A22\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"apartment:A31\",\n      \"id\": \"A31\",\n      \"property_id\": \"P1\",\n      \"label\": \"Apartment A31\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"apartment:A32\",\n      \"id\": \"A32\",\n      \"property_id\": \"P1\",\n      \"label\": \"Apartment A32\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"apartment:A44\",\n      \"id\": \"A44\",\n      \"property_id\": \"P1\",\n      \"label\": \"Apartment A44\"\n    }\n  ],\n  \"document_classes\": [\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"class:rental_agreement\",\n      \"id\": \"rental_agreement\",\n      \"label\": \"Rental agreement\",\n      \"metadata_fields\": {\n        \"title\": {\n          \"type\": \"string\",\n          \"required\": true\n        },\n        \"agreement_id\": {\n          \"type\": \"string\",\n          \"required\": true\n        },\n        \"effective_date\": {\n          \"type\": \"date\",\n          \"required\": true\n        },\n        \"signed\": {\n          \"type\": \"boolean\",\n          \"required\": true\n        },\n        \"revision\": {\n          \"type\": \"integer\",\n          \"required\": true\n        }\n      }\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"class:inventory_appendix\",\n      \"id\": \"inventory_appendix\",\n      \"label\": \"Inventory appendix\",\n      \"metadata_fields\": {\n        \"title\": {\n          \"type\": \"string\",\n          \"required\": true\n        },\n        \"agreement_id\": {\n          \"type\": \"string\",\n          \"required\": true\n        }\n      }\n    }\n  ],\n  \"workflow_states\": [\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"workflow:draft\",\n      \"id\": \"draft\",\n      \"label\": \"Draft\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"workflow:approved\",\n      \"id\": \"approved\",\n      \"label\": \"Approved\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"workflow:archived\",\n      \"id\": \"archived\",\n      \"label\": \"Archived\"\n    }\n  ],\n  \"principals\": [\n    {\n      \"id\": \"property_manager\",\n      \"label\": \"Fictional property manager\",\n      \"roles\": [\n        \"property_manager\"\n      ]\n    },\n    {\n      \"id\": \"records_investigator\",\n      \"label\": \"Fictional authorised records investigator\",\n      \"roles\": [\n        \"records_investigator\"\n      ]\n    }\n  ],\n  \"investigator\": {\n    \"principal_id\": \"records_investigator\",\n    \"source_id\": \"dms_export\",\n    \"export_scope\": \"Previously authorised read-only evidence export of all five synthetic documents, metadata, workflow and ACL rules. This label is not authentication or an access grant.\"\n  },\n  \"comparison_policy\": {\n    \"source_id\": \"housing_policy\",\n    \"source_record_id\": \"policy:relationship-verification:v1\",\n    \"id\": \"relationship-verification-v1\",\n    \"reference_source_by_agreement\": {\n      \"AGR-001\": \"erp_snapshot\",\n      \"AGR-002\": \"erp_snapshot\",\n      \"AGR-003\": null,\n      \"AGR-004\": \"erp_snapshot\"\n    },\n    \"requires_authorised_verification\": true,\n    \"statement\": \"ERP is nominated as a comparison reference only for the listed agreements with an explicit value. It is not correction authority. Where null, authority has not been established. All proposed relationship corrections require authorised verification of underlying records and a separate decision.\"\n  },\n  \"documents\": [\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"dms:DOC-001:v1\",\n      \"id\": \"DOC-001\",\n      \"agreement_id\": \"AGR-001\",\n      \"class_id\": \"rental_agreement\",\n      \"metadata\": {\n        \"title\": \"Rental agreement AGR-001\",\n        \"agreement_id\": \"AGR-001\",\n        \"effective_date\": \"2026-09-01\",\n        \"signed\": true,\n        \"revision\": 1\n      },\n      \"relationships\": {\n        \"property_id\": \"P1\",\n        \"apartment_id\": \"A41\"\n      },\n      \"workflow\": {\n        \"state\": \"approved\",\n        \"approval_event\": {\n          \"id\": \"APPROVAL-001\",\n          \"at\": \"2026-09-01T12:00:00Z\",\n          \"actor_label\": \"Fictional tenancy approver\",\n          \"meaning\": \"Approval of this document version; no authority to correct relationships.\"\n        }\n      },\n      \"acl\": {\n        \"allow_read_roles\": [\n          \"property_manager\",\n          \"records_investigator\"\n        ],\n        \"deny_read_roles\": []\n      },\n      \"content_path\": \"documents/doc-001.txt\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"dms:DOC-002:v1\",\n      \"id\": \"DOC-002\",\n      \"agreement_id\": \"AGR-002\",\n      \"class_id\": \"rental_agreement\",\n      \"metadata\": {\n        \"title\": \"Rental agreement AGR-002\",\n        \"agreement_id\": \"AGR-002\",\n        \"effective_date\": \"2026-09-01\",\n        \"signed\": true,\n        \"revision\": 1\n      },\n      \"relationships\": {\n        \"property_id\": \"P1\",\n        \"apartment_id\": \"A22\"\n      },\n      \"workflow\": {\n        \"state\": \"approved\",\n        \"approval_event\": {\n          \"id\": \"APPROVAL-002\",\n          \"at\": \"2026-09-01T12:00:00Z\",\n          \"actor_label\": \"Fictional tenancy approver\",\n          \"meaning\": \"Approval of this document version; no authority to correct relationships.\"\n        }\n      },\n      \"acl\": {\n        \"allow_read_roles\": [\n          \"property_manager\",\n          \"records_investigator\"\n        ],\n        \"deny_read_roles\": [\n          \"property_manager\"\n        ]\n      },\n      \"content_path\": \"documents/doc-002.txt\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"dms:DOC-003:v1\",\n      \"id\": \"DOC-003\",\n      \"agreement_id\": \"AGR-003\",\n      \"class_id\": \"rental_agreement\",\n      \"metadata\": {\n        \"title\": \"Rental agreement AGR-003\",\n        \"agreement_id\": \"AGR-003\",\n        \"effective_date\": \"2026-09-01\",\n        \"signed\": true,\n        \"revision\": 1\n      },\n      \"relationships\": {\n        \"property_id\": \"P1\",\n        \"apartment_id\": \"A31\"\n      },\n      \"workflow\": {\n        \"state\": \"approved\",\n        \"approval_event\": {\n          \"id\": \"APPROVAL-003\",\n          \"at\": \"2026-09-01T12:00:00Z\",\n          \"actor_label\": \"Fictional tenancy approver\",\n          \"meaning\": \"Approval of this document version; no authority to correct relationships.\"\n        }\n      },\n      \"acl\": {\n        \"allow_read_roles\": [\n          \"property_manager\",\n          \"records_investigator\"\n        ],\n        \"deny_read_roles\": []\n      },\n      \"content_path\": \"documents/doc-003.txt\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"dms:DOC-004:v1\",\n      \"id\": \"DOC-004\",\n      \"agreement_id\": \"AGR-004\",\n      \"class_id\": \"rental_agreement\",\n      \"metadata\": {\n        \"title\": \"Rental agreement AGR-004\",\n        \"agreement_id\": \"AGR-004\",\n        \"effective_date\": \"2026-09-01\",\n        \"signed\": true,\n        \"revision\": 1\n      },\n      \"relationships\": {\n        \"property_id\": \"P1\",\n        \"apartment_id\": \"A44\"\n      },\n      \"workflow\": {\n        \"state\": \"approved\",\n        \"approval_event\": {\n          \"id\": \"APPROVAL-004\",\n          \"at\": \"2026-09-01T12:00:00Z\",\n          \"actor_label\": \"Fictional tenancy approver\",\n          \"meaning\": \"Approval of this document version; no authority to correct relationships.\"\n        }\n      },\n      \"acl\": {\n        \"allow_read_roles\": [\n          \"property_manager\",\n          \"records_investigator\"\n        ],\n        \"deny_read_roles\": []\n      },\n      \"content_path\": \"documents/doc-004.txt\"\n    },\n    {\n      \"source_id\": \"dms_export\",\n      \"source_record_id\": \"dms:DOC-001-APPENDIX:v1\",\n      \"id\": \"DOC-001-APPENDIX\",\n      \"agreement_id\": \"AGR-001\",\n      \"class_id\": \"inventory_appendix\",\n      \"metadata\": {\n        \"title\": \"Inventory appendix for AGR-001\",\n        \"agreement_id\": \"AGR-001\"\n      },\n      \"relationships\": {\n        \"agreement_document_id\": \"DOC-001\"\n      },\n      \"workflow\": {\n        \"state\": \"approved\",\n        \"approval_event\": {\n          \"id\": \"APPROVAL-APPENDIX-001\",\n          \"at\": \"2026-09-01T12:05:00Z\",\n          \"actor_label\": \"Fictional tenancy approver\"\n        }\n      },\n      \"acl\": {\n        \"allow_read_roles\": [\n          \"property_manager\",\n          \"records_investigator\"\n        ],\n        \"deny_read_roles\": []\n      },\n      \"content_path\": \"documents/doc-001-appendix.txt\"\n    }\n  ],\n  \"erp_records\": [\n    {\n      \"source_id\": \"erp_snapshot\",\n      \"source_record_id\": \"erp:rental:001\",\n      \"id\": \"ERP-001\",\n      \"agreement_id\": \"AGR-001\",\n      \"apartment_id\": \"A14\",\n      \"business_status\": \"active\"\n    },\n    {\n      \"source_id\": \"erp_snapshot\",\n      \"source_record_id\": \"erp:rental:002\",\n      \"id\": \"ERP-002\",\n      \"agreement_id\": \"AGR-002\",\n      \"apartment_id\": \"A22\",\n      \"business_status\": \"active\"\n    },\n    {\n      \"source_id\": \"erp_snapshot\",\n      \"source_record_id\": \"erp:rental:003\",\n      \"id\": \"ERP-003\",\n      \"agreement_id\": \"AGR-003\",\n      \"apartment_id\": \"A32\",\n      \"business_status\": \"active\"\n    },\n    {\n      \"source_id\": \"erp_snapshot\",\n      \"source_record_id\": \"erp:rental:004\",\n      \"id\": \"ERP-004\",\n      \"agreement_id\": \"AGR-004\",\n      \"apartment_id\": \"A44\",\n      \"business_status\": \"active\"\n    }\n  ],\n  \"cases\": [\n    {\n      \"id\": \"a14_relationship\",\n      \"complaint\": {\n        \"text\": \"The approved rental agreement for Apartment A14 is missing from my approved apartment view.\",\n        \"requester_id\": \"property_manager\",\n        \"apartment_id\": \"A14\",\n        \"agreement_id\": \"AGR-001\"\n      }\n    },\n    {\n      \"id\": \"permission_blocked\",\n      \"complaint\": {\n        \"text\": \"The approved rental agreement for Apartment A22 is missing from my approved apartment view.\",\n        \"requester_id\": \"property_manager\",\n        \"apartment_id\": \"A22\",\n        \"agreement_id\": \"AGR-002\"\n      }\n    },\n    {\n      \"id\": \"authority_unresolved\",\n      \"complaint\": {\n        \"text\": \"The approved rental agreement for Apartment A32 is missing from my approved apartment view.\",\n        \"requester_id\": \"property_manager\",\n        \"apartment_id\": \"A32\",\n        \"agreement_id\": \"AGR-003\"\n      }\n    },\n    {\n      \"id\": \"clean\",\n      \"complaint\": {\n        \"text\": \"Please confirm the approved rental agreement for Apartment A44 is available in my approved apartment view.\",\n        \"requester_id\": \"property_manager\",\n        \"apartment_id\": \"A44\",\n        \"agreement_id\": \"AGR-004\"\n      }\n    }\n  ]\n}\n",
+      "path": "environment.json",
+      "sha256": "c9b093168804fe50fe78bc5534005e0b0cd59e5f74f6e049327f072a7c0bd62a"
+    }
+  ],
+  "sources": [
+    {
+      "captured_at": "2026-10-01T09:00:00Z",
+      "id": "dms_export",
+      "label": "Cedar Court synthetic document export",
+      "provenance": "Deterministically authored fictional DMS export; no live product or proprietary API used.",
+      "snapshot_id": "DMS-2026-10-01-001"
+    },
+    {
+      "captured_at": "2026-10-01T09:00:00Z",
+      "id": "erp_snapshot",
+      "label": "Cedar Court synthetic ERP snapshot",
+      "provenance": "Deterministically authored fictional housing business records; no ERP connection.",
+      "snapshot_id": "ERP-2026-10-01-001"
+    },
+    {
+      "captured_at": "2026-10-01T09:00:00Z",
+      "id": "housing_policy",
+      "label": "Fictional housing comparison policy",
+      "provenance": "Fictional comparison policy for this demonstration; not a statement of product behavior.",
+      "snapshot_id": "POLICY-2026-09-01-v1"
+    }
+  ],
+  "unknowns": [
+    "Snapshots do not establish current live system state.",
+    "Who introduced the discrepancy, when it arose and why are not established.",
+    "The signed agreement, source records and an authorised reviewer have not established the correct apartment for a correction.",
+    "The authoritative apartment value and responsible business owner remain unresolved."
+  ]
+}

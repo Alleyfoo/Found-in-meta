@@ -1,0 +1,430 @@
+{
+  "organisation": {
+    "id": "CEDAR-COURT",
+    "name": "Cedar Court Housing",
+    "fictional": true
+  },
+  "snapshot_at": "2026-10-01T09:00:00Z",
+  "sources": [
+    {
+      "id": "dms_export",
+      "label": "Cedar Court synthetic document export",
+      "snapshot_id": "DMS-2026-10-01-001",
+      "captured_at": "2026-10-01T09:00:00Z",
+      "provenance": "Deterministically authored fictional DMS export; no live product or proprietary API used."
+    },
+    {
+      "id": "erp_snapshot",
+      "label": "Cedar Court synthetic ERP snapshot",
+      "snapshot_id": "ERP-2026-10-01-001",
+      "captured_at": "2026-10-01T09:00:00Z",
+      "provenance": "Deterministically authored fictional housing business records; no ERP connection."
+    },
+    {
+      "id": "housing_policy",
+      "label": "Fictional housing comparison policy",
+      "snapshot_id": "POLICY-2026-09-01-v1",
+      "captured_at": "2026-10-01T09:00:00Z",
+      "provenance": "Fictional comparison policy for this demonstration; not a statement of product behavior."
+    }
+  ],
+  "properties": [
+    {
+      "source_id": "dms_export",
+      "source_record_id": "property:P1",
+      "id": "P1",
+      "name": "Cedar Court",
+      "address": "1 Example Lane, Fictional Town"
+    }
+  ],
+  "apartments": [
+    {
+      "source_id": "dms_export",
+      "source_record_id": "apartment:A14",
+      "id": "A14",
+      "property_id": "P1",
+      "label": "Apartment A14"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "apartment:A41",
+      "id": "A41",
+      "property_id": "P1",
+      "label": "Apartment A41"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "apartment:A22",
+      "id": "A22",
+      "property_id": "P1",
+      "label": "Apartment A22"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "apartment:A31",
+      "id": "A31",
+      "property_id": "P1",
+      "label": "Apartment A31"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "apartment:A32",
+      "id": "A32",
+      "property_id": "P1",
+      "label": "Apartment A32"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "apartment:A44",
+      "id": "A44",
+      "property_id": "P1",
+      "label": "Apartment A44"
+    }
+  ],
+  "document_classes": [
+    {
+      "source_id": "dms_export",
+      "source_record_id": "class:rental_agreement",
+      "id": "rental_agreement",
+      "label": "Rental agreement",
+      "metadata_fields": {
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "agreement_id": {
+          "type": "string",
+          "required": true
+        },
+        "effective_date": {
+          "type": "date",
+          "required": true
+        },
+        "signed": {
+          "type": "boolean",
+          "required": true
+        },
+        "revision": {
+          "type": "integer",
+          "required": true
+        }
+      }
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "class:inventory_appendix",
+      "id": "inventory_appendix",
+      "label": "Inventory appendix",
+      "metadata_fields": {
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "agreement_id": {
+          "type": "string",
+          "required": true
+        }
+      }
+    }
+  ],
+  "workflow_states": [
+    {
+      "source_id": "dms_export",
+      "source_record_id": "workflow:draft",
+      "id": "draft",
+      "label": "Draft"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "workflow:approved",
+      "id": "approved",
+      "label": "Approved"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "workflow:archived",
+      "id": "archived",
+      "label": "Archived"
+    }
+  ],
+  "principals": [
+    {
+      "id": "property_manager",
+      "label": "Fictional property manager",
+      "roles": [
+        "property_manager"
+      ]
+    },
+    {
+      "id": "records_investigator",
+      "label": "Fictional authorised records investigator",
+      "roles": [
+        "records_investigator"
+      ]
+    }
+  ],
+  "investigator": {
+    "principal_id": "records_investigator",
+    "source_id": "dms_export",
+    "export_scope": "Previously authorised read-only evidence export of all five synthetic documents, metadata, workflow and ACL rules. This label is not authentication or an access grant."
+  },
+  "comparison_policy": {
+    "source_id": "housing_policy",
+    "source_record_id": "policy:relationship-verification:v1",
+    "id": "relationship-verification-v1",
+    "reference_source_by_agreement": {
+      "AGR-001": "erp_snapshot",
+      "AGR-002": "erp_snapshot",
+      "AGR-003": null,
+      "AGR-004": "erp_snapshot"
+    },
+    "requires_authorised_verification": true,
+    "statement": "ERP is nominated as a comparison reference only for the listed agreements with an explicit value. It is not correction authority. Where null, authority has not been established. All proposed relationship corrections require authorised verification of underlying records and a separate decision."
+  },
+  "documents": [
+    {
+      "source_id": "dms_export",
+      "source_record_id": "dms:DOC-001:v1",
+      "id": "DOC-001",
+      "agreement_id": "AGR-001",
+      "class_id": "rental_agreement",
+      "metadata": {
+        "title": "Rental agreement AGR-001",
+        "agreement_id": "AGR-001",
+        "effective_date": "2026-09-01",
+        "signed": true,
+        "revision": 1
+      },
+      "relationships": {
+        "property_id": "P1",
+        "apartment_id": "A41"
+      },
+      "workflow": {
+        "state": "approved",
+        "approval_event": {
+          "id": "APPROVAL-001",
+          "at": "2026-09-01T12:00:00Z",
+          "actor_label": "Fictional tenancy approver",
+          "meaning": "Approval of this document version; no authority to correct relationships."
+        }
+      },
+      "acl": {
+        "allow_read_roles": [
+          "property_manager",
+          "records_investigator"
+        ],
+        "deny_read_roles": []
+      },
+      "content_path": "documents/doc-001.txt"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "dms:DOC-002:v1",
+      "id": "DOC-002",
+      "agreement_id": "AGR-002",
+      "class_id": "rental_agreement",
+      "metadata": {
+        "title": "Rental agreement AGR-002",
+        "agreement_id": "AGR-002",
+        "effective_date": "2026-09-01",
+        "signed": true,
+        "revision": 1
+      },
+      "relationships": {
+        "property_id": "P1",
+        "apartment_id": "A22"
+      },
+      "workflow": {
+        "state": "approved",
+        "approval_event": {
+          "id": "APPROVAL-002",
+          "at": "2026-09-01T12:00:00Z",
+          "actor_label": "Fictional tenancy approver",
+          "meaning": "Approval of this document version; no authority to correct relationships."
+        }
+      },
+      "acl": {
+        "allow_read_roles": [
+          "property_manager",
+          "records_investigator"
+        ],
+        "deny_read_roles": [
+          "property_manager"
+        ]
+      },
+      "content_path": "documents/doc-002.txt"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "dms:DOC-003:v1",
+      "id": "DOC-003",
+      "agreement_id": "AGR-003",
+      "class_id": "rental_agreement",
+      "metadata": {
+        "title": "Rental agreement AGR-003",
+        "agreement_id": "AGR-003",
+        "effective_date": "2026-09-01",
+        "signed": true,
+        "revision": 1
+      },
+      "relationships": {
+        "property_id": "P1",
+        "apartment_id": "A31"
+      },
+      "workflow": {
+        "state": "approved",
+        "approval_event": {
+          "id": "APPROVAL-003",
+          "at": "2026-09-01T12:00:00Z",
+          "actor_label": "Fictional tenancy approver",
+          "meaning": "Approval of this document version; no authority to correct relationships."
+        }
+      },
+      "acl": {
+        "allow_read_roles": [
+          "property_manager",
+          "records_investigator"
+        ],
+        "deny_read_roles": []
+      },
+      "content_path": "documents/doc-003.txt"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "dms:DOC-004:v1",
+      "id": "DOC-004",
+      "agreement_id": "AGR-004",
+      "class_id": "rental_agreement",
+      "metadata": {
+        "title": "Rental agreement AGR-004",
+        "agreement_id": "AGR-004",
+        "effective_date": "2026-09-01",
+        "signed": true,
+        "revision": 1
+      },
+      "relationships": {
+        "property_id": "P1",
+        "apartment_id": "A44"
+      },
+      "workflow": {
+        "state": "approved",
+        "approval_event": {
+          "id": "APPROVAL-004",
+          "at": "2026-09-01T12:00:00Z",
+          "actor_label": "Fictional tenancy approver",
+          "meaning": "Approval of this document version; no authority to correct relationships."
+        }
+      },
+      "acl": {
+        "allow_read_roles": [
+          "property_manager",
+          "records_investigator"
+        ],
+        "deny_read_roles": []
+      },
+      "content_path": "documents/doc-004.txt"
+    },
+    {
+      "source_id": "dms_export",
+      "source_record_id": "dms:DOC-001-APPENDIX:v1",
+      "id": "DOC-001-APPENDIX",
+      "agreement_id": "AGR-001",
+      "class_id": "inventory_appendix",
+      "metadata": {
+        "title": "Inventory appendix for AGR-001",
+        "agreement_id": "AGR-001"
+      },
+      "relationships": {
+        "agreement_document_id": "DOC-001"
+      },
+      "workflow": {
+        "state": "approved",
+        "approval_event": {
+          "id": "APPROVAL-APPENDIX-001",
+          "at": "2026-09-01T12:05:00Z",
+          "actor_label": "Fictional tenancy approver"
+        }
+      },
+      "acl": {
+        "allow_read_roles": [
+          "property_manager",
+          "records_investigator"
+        ],
+        "deny_read_roles": []
+      },
+      "content_path": "documents/doc-001-appendix.txt"
+    }
+  ],
+  "erp_records": [
+    {
+      "source_id": "erp_snapshot",
+      "source_record_id": "erp:rental:001",
+      "id": "ERP-001",
+      "agreement_id": "AGR-001",
+      "apartment_id": "A14",
+      "business_status": "active"
+    },
+    {
+      "source_id": "erp_snapshot",
+      "source_record_id": "erp:rental:002",
+      "id": "ERP-002",
+      "agreement_id": "AGR-002",
+      "apartment_id": "A22",
+      "business_status": "active"
+    },
+    {
+      "source_id": "erp_snapshot",
+      "source_record_id": "erp:rental:003",
+      "id": "ERP-003",
+      "agreement_id": "AGR-003",
+      "apartment_id": "A32",
+      "business_status": "active"
+    },
+    {
+      "source_id": "erp_snapshot",
+      "source_record_id": "erp:rental:004",
+      "id": "ERP-004",
+      "agreement_id": "AGR-004",
+      "apartment_id": "A44",
+      "business_status": "active"
+    }
+  ],
+  "cases": [
+    {
+      "id": "a14_relationship",
+      "complaint": {
+        "text": "The approved rental agreement for Apartment A14 is missing from my approved apartment view.",
+        "requester_id": "property_manager",
+        "apartment_id": "A14",
+        "agreement_id": "AGR-001"
+      }
+    },
+    {
+      "id": "permission_blocked",
+      "complaint": {
+        "text": "The approved rental agreement for Apartment A22 is missing from my approved apartment view.",
+        "requester_id": "property_manager",
+        "apartment_id": "A22",
+        "agreement_id": "AGR-002"
+      }
+    },
+    {
+      "id": "authority_unresolved",
+      "complaint": {
+        "text": "The approved rental agreement for Apartment A32 is missing from my approved apartment view.",
+        "requester_id": "property_manager",
+        "apartment_id": "A32",
+        "agreement_id": "AGR-003"
+      }
+    },
+    {
+      "id": "clean",
+      "complaint": {
+        "text": "Please confirm the approved rental agreement for Apartment A44 is available in my approved apartment view.",
+        "requester_id": "property_manager",
+        "apartment_id": "A44",
+        "agreement_id": "AGR-004"
+      }
+    }
+  ]
+}

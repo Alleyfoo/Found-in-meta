@@ -1,0 +1,6 @@
+SYNTHETIC RENTAL AGREEMENT
+Agreement identifier: AGR-001
+Document identifier: DOC-001
+Fictional parties: Cedar Court Housing and Example Resident 1.
+This neutral content fixture establishes file presence only. It does not identify an apartment or resolve any metadata discrepancy.
+No real people, properties, signatures, or contracts are represented.
