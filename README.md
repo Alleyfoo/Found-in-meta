@@ -6,6 +6,8 @@ A small synthetic document-integrity investigation. An approved rental agreement
 
 This is a case study with a replay command, four deterministic fixtures and evidence a person can inspect. It has no live M-Files or ERP integration, AI dependency, metadata write-back, ticket store, approval service, authentication system or frontend.
 
+Read the [finished case study](docs/case-study.md) for the investigation narrative.
+
 ## Run the demonstration
 
 Python 3.11 or later. The replay uses only the standard library and runs from a fresh checkout without installing the package:
