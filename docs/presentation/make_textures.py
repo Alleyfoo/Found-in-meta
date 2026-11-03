@@ -32,6 +32,9 @@ SLIDES = {
     "mapping": ("#E2E7EE", "#1F45C8", 0.30),
     "approach": ("#F1F3F6", "#1F45C8", 0.38),
     "close": ("#1A3570", "#8FAAE6", 0.55),
+    "meta": ("#E2E7EE", "#1F45C8", 0.30),
+    "paradigm": ("#F1F3F6", "#1F45C8", 0.30),
+    "jobs": ("#1A3570", "#8FAAE6", 0.45),
 }
 
 
